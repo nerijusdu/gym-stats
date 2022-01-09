@@ -1,4 +1,6 @@
+import { Flex } from "@chakra-ui/react"
 import { Head, BlitzLayout } from "blitz"
+import NavBar from "../components/NavBar"
 
 const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
   return (
@@ -8,7 +10,10 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {children}
+      <Flex flexDir="column">
+        <NavBar />
+        {children}
+      </Flex>
     </>
   )
 }
