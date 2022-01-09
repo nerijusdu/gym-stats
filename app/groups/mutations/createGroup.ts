@@ -1,10 +1,6 @@
 import { resolver } from "blitz"
 import db from "db"
-import { z } from "zod"
-
-const CreateGroup = z.object({
-  name: z.string().regex(/^[a-zA-Z0-9 ]+$/),
-})
+import { CreateGroup } from "../validations"
 
 export default resolver.pipe(
   resolver.zod(CreateGroup),

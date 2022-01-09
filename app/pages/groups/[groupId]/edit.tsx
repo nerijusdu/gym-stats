@@ -4,6 +4,9 @@ import Layout from "app/core/layouts/Layout"
 import getGroup from "app/groups/queries/getGroup"
 import updateGroup from "app/groups/mutations/updateGroup"
 import { GroupForm, FORM_ERROR } from "app/groups/components/GroupForm"
+import { UpdateGroup } from "app/groups/validations"
+import { Heading } from "@chakra-ui/react"
+import Container from "app/core/components/Container"
 
 export const EditGroup = () => {
   const router = useRouter()
@@ -21,25 +24,21 @@ export const EditGroup = () => {
   return (
     <>
       <Head>
-        <title>Edit Group {group.id}</title>
+        <title>Edit {group.name}</title>
       </Head>
 
-      <div>
-        <h1>Edit Group {group.id}</h1>
-        <pre>{JSON.stringify(group, null, 2)}</pre>
+      <Container>
+        <Heading size="md">Edit {group.name}</Heading>
 
         <GroupForm
           submitText="Update Group"
-          // TODO use a zod schema for form validation
-          //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-          //         then import and use it here
-          // schema={UpdateGroup}
+          schema={UpdateGroup}
           initialValues={group}
           onSubmit={async (values) => {
             try {
               const updated = await updateGroupMutation({
-                id: group.id,
                 ...values,
+                id: group.id,
               })
               await setQueryData(updated)
               router.push(Routes.ShowGroupPage({ groupId: updated.id }))
@@ -51,24 +50,16 @@ export const EditGroup = () => {
             }
           }}
         />
-      </div>
+      </Container>
     </>
   )
 }
 
 const EditGroupPage: BlitzPage = () => {
   return (
-    <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <EditGroup />
-      </Suspense>
-
-      <p>
-        <Link href={Routes.GroupsPage()}>
-          <a>Groups</a>
-        </Link>
-      </p>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditGroup />
+    </Suspense>
   )
 }
 

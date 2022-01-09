@@ -2,41 +2,34 @@ import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createGroup from "app/groups/mutations/createGroup"
 import { GroupForm, FORM_ERROR } from "app/groups/components/GroupForm"
+import { Flex, Heading } from "@chakra-ui/react"
+import { CreateGroup } from "app/groups/validations"
 
 const NewGroupPage: BlitzPage = () => {
   const router = useRouter()
   const [createGroupMutation] = useMutation(createGroup)
 
   return (
-    <div>
-      <h1>Create New Group</h1>
+    <Flex flexDir="column" p={4} boxShadow="dark-lg" m={4} rounded={7}>
+      <Heading size="md">Create New Group</Heading>
 
       <GroupForm
         submitText="Create Group"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
-        // schema={CreateGroup}
-        // initialValues={{}}
+        schema={CreateGroup}
         onSubmit={async (values) => {
           try {
             const group = await createGroupMutation(values)
             router.push(Routes.ShowGroupPage({ groupId: group.id }))
           } catch (error: any) {
             console.error(error)
+
             return {
               [FORM_ERROR]: error.toString(),
             }
           }
         }}
       />
-
-      <p>
-        <Link href={Routes.GroupsPage()}>
-          <a>Groups</a>
-        </Link>
-      </p>
-    </div>
+    </Flex>
   )
 }
 

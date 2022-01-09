@@ -10,7 +10,7 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Flex flexDir="column">
+      <Flex flexDir="column" maxW="container.xl" alignItems="center" mx="auto">
         <NavBar />
         {children}
       </Flex>

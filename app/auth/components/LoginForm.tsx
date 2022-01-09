@@ -1,8 +1,16 @@
-import { AuthenticationError, Link, useMutation, Routes, PromiseReturnType } from "blitz"
+import {
+  AuthenticationError,
+  Link as BlitzLink,
+  useMutation,
+  Routes,
+  PromiseReturnType,
+} from "blitz"
 import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { Form, FORM_ERROR } from "app/core/components/Form"
 import login from "app/auth/mutations/login"
 import { Login } from "app/auth/validations"
+import Container from "app/core/components/Container"
+import { Heading, Link } from "@chakra-ui/react"
 
 type LoginFormProps = {
   onSuccess?: (user: PromiseReturnType<typeof login>) => void
@@ -12,8 +20,8 @@ export const LoginForm = (props: LoginFormProps) => {
   const [loginMutation] = useMutation(login)
 
   return (
-    <div>
-      <h1>Login</h1>
+    <Container maxW="container.sm">
+      <Heading size="md">Login</Heading>
 
       <Form
         submitText="Login"
@@ -38,16 +46,19 @@ export const LoginForm = (props: LoginFormProps) => {
         <LabeledTextField name="email" label="Email" placeholder="Email" />
         <LabeledTextField name="password" label="Password" placeholder="Password" type="password" />
         <div>
-          <Link href={Routes.ForgotPasswordPage()}>
-            <a>Forgot your password?</a>
-          </Link>
+          <BlitzLink href={Routes.ForgotPasswordPage()}>
+            <Link>Forgot your password?</Link>
+          </BlitzLink>
         </div>
       </Form>
 
       <div style={{ marginTop: "1rem" }}>
-        Or <Link href={Routes.SignupPage()}>Sign Up</Link>
+        Or{" "}
+        <BlitzLink href={Routes.SignupPage()}>
+          <Link>Sign Up</Link>
+        </BlitzLink>
       </div>
-    </div>
+    </Container>
   )
 }
 

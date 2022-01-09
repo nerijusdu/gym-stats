@@ -3,6 +3,7 @@ import { Head, Link as BlitzLink, usePaginatedQuery, useRouter, BlitzPage, Route
 import Layout from "app/core/layouts/Layout"
 import getGroups from "app/groups/queries/getGroups"
 import { Box, Button, Flex } from "@chakra-ui/react"
+import Container from "app/core/components/Container"
 
 const ITEMS_PER_PAGE = 100
 
@@ -24,8 +25,9 @@ export const GroupsList: React.FC = () => {
         {groups.map((group) => (
           <BlitzLink key={group.id} href={Routes.ShowGroupPage({ groupId: group.id })}>
             <Flex
-              boxShadow="dark-lg"
+              boxShadow="lg"
               cursor="pointer"
+              bg="gray.200"
               _hover={{ bg: "purple.200" }}
               rounded={7}
               p={4}
@@ -57,7 +59,7 @@ const GroupsPage: BlitzPage = () => {
         <title>Groups</title>
       </Head>
 
-      <Flex flexDir="column" p={4}>
+      <Container>
         <Box>
           <BlitzLink href={Routes.NewGroupPage()}>
             <Button>Create Group</Button>
@@ -67,7 +69,7 @@ const GroupsPage: BlitzPage = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <GroupsList />
         </Suspense>
-      </Flex>
+      </Container>
     </>
   )
 }

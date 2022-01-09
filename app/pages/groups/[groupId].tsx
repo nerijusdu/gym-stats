@@ -4,6 +4,7 @@ import Layout from "app/core/layouts/Layout"
 import getGroup from "app/groups/queries/getGroup"
 import deleteGroup from "app/groups/mutations/deleteGroup"
 import { Button, Flex } from "@chakra-ui/react"
+import Container from "app/core/components/Container"
 
 export const Group: React.FC = () => {
   const router = useRouter()
@@ -17,8 +18,9 @@ export const Group: React.FC = () => {
         <title>{group.name}</title>
       </Head>
 
-      <Flex flexDir="column" p={4}>
-        <Flex>
+      <Container>
+        <h1>{group.name}</h1>
+        <Flex alignSelf="flex-end">
           <Link href={Routes.EditGroupPage({ groupId: group.id })}>
             <Button variant="ghost">Edit</Button>
           </Link>
@@ -38,8 +40,7 @@ export const Group: React.FC = () => {
             Delete
           </Button>
         </Flex>
-        <h1>{group.name}</h1>
-      </Flex>
+      </Container>
     </>
   )
 }
