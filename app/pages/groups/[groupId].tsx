@@ -3,8 +3,9 @@ import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Rout
 import Layout from "app/core/layouts/Layout"
 import getGroup from "app/groups/queries/getGroup"
 import deleteGroup from "app/groups/mutations/deleteGroup"
+import { Button, Flex } from "@chakra-ui/react"
 
-export const Group = () => {
+export const Group: React.FC = () => {
   const router = useRouter()
   const groupId = useParam("groupId", "string")
   const [deleteGroupMutation] = useMutation(deleteGroup)
@@ -13,47 +14,41 @@ export const Group = () => {
   return (
     <>
       <Head>
-        <title>Group {group.id}</title>
+        <title>{group.name}</title>
       </Head>
 
-      <div>
-        <h1>Group {group.id}</h1>
-        <pre>{JSON.stringify(group, null, 2)}</pre>
+      <Flex flexDir="column" p={4}>
+        <Flex>
+          <Link href={Routes.EditGroupPage({ groupId: group.id })}>
+            <Button variant="ghost">Edit</Button>
+          </Link>
 
-        <Link href={Routes.EditGroupPage({ groupId: group.id })}>
-          <a>Edit</a>
-        </Link>
-
-        <button
-          type="button"
-          onClick={async () => {
-            if (window.confirm("This will be deleted")) {
-              await deleteGroupMutation({ id: group.id })
-              router.push(Routes.GroupsPage())
-            }
-          }}
-          style={{ marginLeft: "0.5rem" }}
-        >
-          Delete
-        </button>
-      </div>
+          <Button
+            type="button"
+            colorScheme="red"
+            variant="ghost"
+            onClick={async () => {
+              if (window.confirm("This will be deleted")) {
+                await deleteGroupMutation({ id: group.id })
+                router.push(Routes.GroupsPage())
+              }
+            }}
+            style={{ marginLeft: "0.5rem" }}
+          >
+            Delete
+          </Button>
+        </Flex>
+        <h1>{group.name}</h1>
+      </Flex>
     </>
   )
 }
 
 const ShowGroupPage: BlitzPage = () => {
   return (
-    <div>
-      <p>
-        <Link href={Routes.GroupsPage()}>
-          <a>Groups</a>
-        </Link>
-      </p>
-
-      <Suspense fallback={<div>Loading...</div>}>
-        <Group />
-      </Suspense>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Group />
+    </Suspense>
   )
 }
 

@@ -1,11 +1,12 @@
 import { Suspense } from "react"
-import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import { Head, Link as BlitzLink, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getGroups from "app/groups/queries/getGroups"
+import { Box, Button, Flex } from "@chakra-ui/react"
 
 const ITEMS_PER_PAGE = 100
 
-export const GroupsList = () => {
+export const GroupsList: React.FC = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
   const [{ groups, hasMore }] = usePaginatedQuery(getGroups, {
@@ -19,22 +20,32 @@ export const GroupsList = () => {
 
   return (
     <div>
-      <ul>
+      <Flex my={4} gap={4} flexWrap="wrap">
         {groups.map((group) => (
-          <li key={group.id}>
-            <Link href={Routes.ShowGroupPage({ groupId: group.id })}>
-              <a>{group.name}</a>
-            </Link>
-          </li>
+          <BlitzLink key={group.id} href={Routes.ShowGroupPage({ groupId: group.id })}>
+            <Flex
+              boxShadow="dark-lg"
+              cursor="pointer"
+              _hover={{ bg: "purple.200" }}
+              rounded={7}
+              p={4}
+            >
+              {group.name}
+            </Flex>
+          </BlitzLink>
         ))}
-      </ul>
+      </Flex>
 
-      <button disabled={page === 0} onClick={goToPreviousPage}>
-        Previous
-      </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
-        Next
-      </button>
+      {(page !== 0 || hasMore) && (
+        <>
+          <Button variant="ghost" size="sm" disabled={page === 0} onClick={goToPreviousPage}>
+            Previous
+          </Button>
+          <Button variant="ghost" size="sm" disabled={!hasMore} onClick={goToNextPage}>
+            Next
+          </Button>
+        </>
+      )}
     </div>
   )
 }
@@ -46,17 +57,17 @@ const GroupsPage: BlitzPage = () => {
         <title>Groups</title>
       </Head>
 
-      <div>
-        <p>
-          <Link href={Routes.NewGroupPage()}>
-            <a>Create Group</a>
-          </Link>
-        </p>
+      <Flex flexDir="column" p={4}>
+        <Box>
+          <BlitzLink href={Routes.NewGroupPage()}>
+            <Button>Create Group</Button>
+          </BlitzLink>
+        </Box>
 
         <Suspense fallback={<div>Loading...</div>}>
           <GroupsList />
         </Suspense>
-      </div>
+      </Flex>
     </>
   )
 }
