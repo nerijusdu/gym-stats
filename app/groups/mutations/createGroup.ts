@@ -6,14 +6,21 @@ export default resolver.pipe(
   resolver.zod(CreateGroup),
   resolver.authorize(),
   async (input, ctx) => {
-    const group = await db.group.create({
-      data: {
-        name: input.name,
-        id: input.name.toLowerCase().replace(/\s/g, "-"),
-        ownerId: ctx.session?.userId,
-      },
+    const users = await db.user.findMany({
+      where: { email: { in: input.users.map((u) => u.email) } },
     })
 
-    return group
+    return await db.group.create({
+      data: {
+        id: input.name.toLowerCase().replace(/\s/g, "-"),
+        name: input.name,
+        users: {
+          connect: users.map((u) => ({ id: u.id })),
+        },
+        owner: {
+          connect: { id: ctx.session.userId },
+        },
+      },
+    })
   }
 )

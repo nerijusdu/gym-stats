@@ -3,7 +3,7 @@ import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Rout
 import Layout from "app/core/layouts/Layout"
 import getGroup from "app/groups/queries/getGroup"
 import deleteGroup from "app/groups/mutations/deleteGroup"
-import { Button, Flex } from "@chakra-ui/react"
+import { Button, Flex, Heading, Text } from "@chakra-ui/react"
 import Container from "app/core/components/Container"
 
 export const Group: React.FC = () => {
@@ -19,7 +19,15 @@ export const Group: React.FC = () => {
       </Head>
 
       <Container>
-        <h1>{group.name}</h1>
+        <Heading size="md">{group.name}</Heading>
+
+        <Flex direction="column">
+          <Text>Users in this group:</Text>
+          {group.users.map((user) => (
+            <Text key={user.id}>{user.email}</Text>
+          ))}
+        </Flex>
+
         <Flex alignSelf="flex-end">
           <Link href={Routes.EditGroupPage({ groupId: group.id })}>
             <Button variant="ghost">Edit</Button>
