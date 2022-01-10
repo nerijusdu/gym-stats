@@ -3,8 +3,14 @@ import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Rout
 import Layout from "app/core/layouts/Layout"
 import getGroup from "app/groups/queries/getGroup"
 import deleteGroup from "app/groups/mutations/deleteGroup"
-import { Button, Flex, Heading, Text } from "@chakra-ui/react"
+import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import Container from "app/core/components/Container"
+
+const periodNames = {
+  WEEK: "Week(s)",
+  MONTH: "Month(s)",
+  YEAR: "Year(s)",
+}
 
 export const Group: React.FC = () => {
   const router = useRouter()
@@ -21,11 +27,18 @@ export const Group: React.FC = () => {
       <Container>
         <Heading size="md">{group.name}</Heading>
 
+        <Divider my={2} />
+
         <Flex direction="column">
-          <Text>Users in this group:</Text>
+          {group.users.length > 0 && <Text>Users in this group:</Text>}
+          {!group.users.length && <Text>No users assigned to this group</Text>}
           {group.users.map((user) => (
             <Text key={user.id}>{user.email}</Text>
           ))}
+          <Divider my={2} />
+          <Text>
+            Resets every {group.period} {periodNames[group.periodType]}
+          </Text>
         </Flex>
 
         <Flex alignSelf="flex-end">

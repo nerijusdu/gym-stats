@@ -1,8 +1,13 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// datasource db {
+//   provider = "sqlite"
+//   url      = env("DATABASE_URL")
+// }
+
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -43,13 +48,11 @@ model Session {
 }
 
 model Token {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   hashedToken String
-  type        String
-  // See note below about TokenType enum
-  // type        TokenType
+  type        TokenType
   expiresAt   DateTime
   sentTo      String
 
@@ -59,12 +62,9 @@ model Token {
   @@unique([hashedToken, type])
 }
 
-// NOTE: It's highly recommended to use an enum for the token type
-//       but enums only work in Postgres.
-//       See: https://blitzjs.com/docs/database-overview#switch-to-postgre-sql
-// enum TokenType {
-//   RESET_PASSWORD
-// }
+enum TokenType {
+  RESET_PASSWORD
+}
 
 model Group {
   id        String   @id
@@ -72,8 +72,15 @@ model Group {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owner   User @relation(fields: [ownerId], references: [id], name: "OwnedGroups")
-  ownerId Int
+  owner      User       @relation(fields: [ownerId], references: [id], name: "OwnedGroups")
+  ownerId    Int
+  users      User[]     @relation(fields: [ownerId], references: [id], name: "JoinedGroups")
+  period     Int        @default(1)
+  periodType PeriodType
+}
 
-  users User[] @relation(fields: [ownerId], references: [id], name: "JoinedGroups")
+enum PeriodType {
+  WEEK
+  MONTH
+  YEAR
 }

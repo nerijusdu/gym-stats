@@ -17,6 +17,11 @@ const theme = extendTheme({
         colorScheme: "purple",
       },
     },
+    Heading: {
+      baseStyle: {
+        pb: 4,
+      },
+    },
   },
 })
 

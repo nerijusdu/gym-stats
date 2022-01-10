@@ -1,21 +1,16 @@
 import { forwardRef, PropsWithoutRef, ComponentPropsWithoutRef, PropsWithRef } from "react"
 import { useFormContext } from "react-hook-form"
-
-import { Input } from "@chakra-ui/input"
 import { FormControl, FormLabel, FormLabelProps } from "@chakra-ui/form-control"
+import { Select } from "@chakra-ui/react"
 
-export interface LabeledTextFieldProps extends ComponentPropsWithoutRef<typeof Input> {
-  /** Field name. */
+export interface LabeledTextFieldProps extends ComponentPropsWithoutRef<typeof Select> {
   name: string
-  /** Field label. */
-  label: string
-  /** Field type. Doesn't include radio buttons and checkboxes */
-  type?: "text" | "password" | "email" | "number"
+  label?: string
   outerProps?: PropsWithoutRef<JSX.IntrinsicElements["div"]>
   labelProps?: PropsWithRef<FormLabelProps>
 }
 
-export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldProps>(
+export const LabeledSelectField = forwardRef<HTMLInputElement, LabeledTextFieldProps>(
   ({ label, outerProps, labelProps, name, children, ...props }, ref) => {
     const {
       register,
@@ -29,12 +24,9 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
       <FormControl {...outerProps}>
         <FormLabel {...labelProps}>
           {label}
-          <Input
-            disabled={isSubmitting}
-            {...register(name, { valueAsNumber: props.type === "number" })}
-            {...props}
-          />
-          {children}
+          <Select disabled={isSubmitting} {...register(name)} {...props}>
+            {children}
+          </Select>
         </FormLabel>
         {error && (
           <div role="alert" style={{ color: "red" }}>
@@ -46,4 +38,4 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
   }
 )
 
-export default LabeledTextField
+export default LabeledSelectField

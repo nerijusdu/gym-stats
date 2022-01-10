@@ -10,7 +10,15 @@ const GetGroup = z.object({
 export default resolver.pipe(resolver.zod(GetGroup), resolver.authorize(), async ({ id }) => {
   const group = await db.group.findFirst({
     where: { id },
-    include: { users: { select: { id: true, email: true } } },
+    select: {
+      id: true,
+      name: true,
+      users: {
+        select: { id: true, email: true },
+      },
+      period: true,
+      periodType: true,
+    },
   })
 
   if (!group) throw new NotFoundError()

@@ -28,7 +28,15 @@ export default resolver.pipe(
           disconnect: removedUsers.map((u) => ({ id: u.id })),
         },
       },
-      include: { users: { select: { id: true, email: true } } },
+      select: {
+        id: true,
+        name: true,
+        users: {
+          select: { id: true, email: true },
+        },
+        period: true,
+        periodType: true,
+      },
     })
   }
 )

@@ -14,6 +14,8 @@ export default resolver.pipe(
       data: {
         id: input.name.toLowerCase().replace(/\s/g, "-"),
         name: input.name,
+        period: input.period,
+        periodType: input.periodType,
         users: {
           connect: users.map((u) => ({ id: u.id })),
         },
