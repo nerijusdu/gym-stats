@@ -18,6 +18,9 @@ export default resolver.pipe(resolver.zod(GetGroup), resolver.authorize(), async
       },
       period: true,
       periodType: true,
+      iterationStartDate: true,
+      iterationEndDate: true,
+      endOfPeriod: true,
     },
   })
 

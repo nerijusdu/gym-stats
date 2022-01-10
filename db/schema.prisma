@@ -72,11 +72,15 @@ model Group {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owner      User       @relation(fields: [ownerId], references: [id], name: "OwnedGroups")
-  ownerId    Int
-  users      User[]     @relation(fields: [ownerId], references: [id], name: "JoinedGroups")
-  period     Int        @default(1)
-  periodType PeriodType
+  owner              User       @relation(fields: [ownerId], references: [id], name: "OwnedGroups")
+  ownerId            Int
+  users              User[]     @relation(references: [id], name: "JoinedGroups")
+  period             Int        @default(1)
+  periodType         PeriodType
+  endOfPeriod        Boolean    @default(false)
+  iterationStartDate DateTime
+  iterationEndDate   DateTime
+  iterationId        Int        @default(0)
 }
 
 enum PeriodType {

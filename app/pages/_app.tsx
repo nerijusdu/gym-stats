@@ -9,14 +9,25 @@ import {
 } from "blitz"
 import LoginForm from "app/auth/components/LoginForm"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
+import dayjs from "dayjs"
+import enLocale from "dayjs/locale/en"
+
+var localeObject = {
+  ...enLocale,
+  weekStart: 1,
+}
+dayjs.locale("en", localeObject)
+
+const defaultColorScheme = {
+  defaultProps: {
+    colorScheme: "purple",
+  },
+}
 
 const theme = extendTheme({
   components: {
-    Button: {
-      defaultProps: {
-        colorScheme: "purple",
-      },
-    },
+    Button: { ...defaultColorScheme },
+    Checkbox: { ...defaultColorScheme },
     Heading: {
       baseStyle: {
         pb: 4,

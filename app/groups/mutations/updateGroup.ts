@@ -1,6 +1,7 @@
 import { NotFoundError, resolver } from "blitz"
 import db from "db"
 import { UpdateGroup } from "../validations"
+import dayjs from "dayjs"
 
 export default resolver.pipe(
   resolver.zod(UpdateGroup),
@@ -18,11 +19,24 @@ export default resolver.pipe(
     if (!group) throw new NotFoundError()
 
     const removedUsers = group.users.filter((u) => !data.users.find((u2) => u2.email === u.email))
+    let iterationStartDate
+    let iterationEndDate
+    if (data.iterationStartDate) {
+      iterationStartDate = dayjs(data.iterationStartDate)
+      iterationEndDate = iterationStartDate.add(data.period, data.periodType.toLocaleLowerCase())
+      if (data.endOfPeriod) {
+        iterationEndDate = iterationEndDate
+          .startOf(data.periodType.toLocaleLowerCase())
+          .add(-1, "day")
+      }
+    }
 
     return await db.group.update({
       where: { id },
       data: {
         ...data,
+        iterationStartDate: iterationStartDate?.toDate(),
+        iterationEndDate: iterationEndDate?.toDate(),
         users: {
           connect: users.map((u) => ({ id: u.id })),
           disconnect: removedUsers.map((u) => ({ id: u.id })),

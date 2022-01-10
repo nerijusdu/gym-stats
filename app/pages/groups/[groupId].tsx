@@ -5,6 +5,7 @@ import getGroup from "app/groups/queries/getGroup"
 import deleteGroup from "app/groups/mutations/deleteGroup"
 import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import Container from "app/core/components/Container"
+import dayjs from "dayjs"
 
 const periodNames = {
   WEEK: "Week(s)",
@@ -35,9 +36,16 @@ export const Group: React.FC = () => {
           {group.users.map((user) => (
             <Text key={user.id}>{user.email}</Text>
           ))}
+
           <Divider my={2} />
+          <Text>Iterations:</Text>
           <Text>
             Resets every {group.period} {periodNames[group.periodType]}
+          </Text>
+          <Text>
+            Current iteration started at{" "}
+            <b>{dayjs(group.iterationStartDate).format("YYYY-MM-DD")}</b>&nbsp; and ends at{" "}
+            <b>{dayjs(group.iterationEndDate).format("YYYY-MM-DD")}</b>.
           </Text>
         </Flex>
 

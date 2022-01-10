@@ -5,6 +5,8 @@ export const CreateGroup = z.object({
   users: z.array(z.object({ email: z.string().email() })),
   period: z.number(),
   periodType: z.enum(["WEEK", "MONTH", "YEAR"]),
+  iterationStartDate: z.date().optional(),
+  endOfPeriod: z.boolean().optional(),
 })
 
 export const UpdateGroup = z.object({
@@ -13,4 +15,6 @@ export const UpdateGroup = z.object({
   users: z.array(z.object({ email: z.string().email() })),
   period: z.number(),
   periodType: z.enum(["WEEK", "MONTH", "YEAR"]),
+  iterationStartDate: z.date().optional(),
+  endOfPeriod: z.boolean().optional(),
 })

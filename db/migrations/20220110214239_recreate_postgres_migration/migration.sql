@@ -56,6 +56,9 @@ CREATE TABLE "Group" (
     "ownerId" INTEGER NOT NULL,
     "period" INTEGER NOT NULL DEFAULT 1,
     "periodType" "PeriodType" NOT NULL,
+    "iterationStartDate" TIMESTAMP(3) NOT NULL,
+    "iterationEndDate" TIMESTAMP(3) NOT NULL,
+    "iterationId" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Group_pkey" PRIMARY KEY ("id")
 );
@@ -92,9 +95,6 @@ ALTER TABLE "Token" ADD CONSTRAINT "Token_userId_fkey" FOREIGN KEY ("userId") RE
 
 -- AddForeignKey
 ALTER TABLE "Group" ADD CONSTRAINT "Group_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Group" ADD FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_JoinedGroups" ADD FOREIGN KEY ("A") REFERENCES "Group"("id") ON DELETE CASCADE ON UPDATE CASCADE;
