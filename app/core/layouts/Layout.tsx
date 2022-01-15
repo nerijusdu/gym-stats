@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react"
 import { Head, BlitzLayout } from "blitz"
+import { Suspense } from "react"
 import NavBar from "../components/NavBar"
 
 const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
@@ -12,7 +13,9 @@ const Layout: BlitzLayout<{ title?: string }> = ({ title, children }) => {
 
       <Flex flexDir="column" maxW="container.xl" alignItems="center" mx="auto">
         <NavBar />
-        {children}
+        <Suspense fallback={<div>Loading...</div>}>
+          {children}
+        </Suspense>
       </Flex>
     </>
   )

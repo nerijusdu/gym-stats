@@ -27,7 +27,9 @@ export const GroupsList: React.FC = () => {
             <Flex
               boxShadow="lg"
               cursor="pointer"
-              bg="gray.200"
+              bg="purple.200"
+              color="black"
+              width="100%"
               _hover={{ bg: "purple.200" }}
               rounded={7}
               p={4}

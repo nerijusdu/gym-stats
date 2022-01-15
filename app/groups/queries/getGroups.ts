@@ -16,7 +16,18 @@ export default resolver.pipe(
       skip,
       take,
       count: () => db.group.count({ where }),
-      query: (paginateArgs) => db.group.findMany({ ...paginateArgs, where, orderBy }),
+      query: (paginateArgs) => db.group.findMany({
+        ...paginateArgs,
+        where,
+        orderBy,
+        select: {
+          id: true,
+          name: true,
+          iterationEndDate: true,
+          iterationId: true,
+          ownerId: true
+        }
+      }),
     })
 
     return {

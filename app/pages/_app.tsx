@@ -25,6 +25,9 @@ const defaultColorScheme = {
 }
 
 const theme = extendTheme({
+  config: {
+    initialColorMode: 'dark',
+  },
   components: {
     Button: { ...defaultColorScheme },
     Checkbox: { ...defaultColorScheme },

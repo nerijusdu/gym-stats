@@ -1,0 +1,7 @@
+- Groups
+  - [x] CRUD group
+  - [x] Set iterations
+  - [ ] Log your progress
+  - [ ] Previous iterations
+- Home screen
+  - [x] Scoreboard for the most recent groups (+ time left)
