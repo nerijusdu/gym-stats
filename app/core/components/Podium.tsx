@@ -41,7 +41,7 @@ const PodiumColumn : React.FC<PodiumColumnProps> = ({ place, name }) => {
         m="1px"
         rounded={4}
         shadow="md"
-        px={16}
+        px={[8, 12, 16]}
         pt={1}
         h={height}
         bg={colorMap[place]}

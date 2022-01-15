@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { Head, Link as BlitzLink, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getGroups from "app/groups/queries/getGroups"
-import { Box, Button, Flex } from "@chakra-ui/react"
+import { Box, Button, Flex, Link } from "@chakra-ui/react"
 import Container from "app/core/components/Container"
 
 const ITEMS_PER_PAGE = 100
@@ -21,21 +21,12 @@ export const GroupsList: React.FC = () => {
 
   return (
     <div>
-      <Flex my={4} gap={4} flexWrap="wrap">
+      <Flex my={4} gap={4} flexWrap="wrap" direction="column">
         {groups.map((group) => (
           <BlitzLink key={group.id} href={Routes.ShowGroupPage({ groupId: group.id })}>
-            <Flex
-              boxShadow="lg"
-              cursor="pointer"
-              bg="purple.200"
-              color="black"
-              width="100%"
-              _hover={{ bg: "purple.200" }}
-              rounded={7}
-              p={4}
-            >
+            <Link cursor="pointer" p={2}>
               {group.name}
-            </Flex>
+            </Link>
           </BlitzLink>
         ))}
       </Flex>
