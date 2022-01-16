@@ -1,8 +1,15 @@
-FROM node:lts
+FROM postgres as database
+
+ENV POSTGRES_PASSWORD dummypass
+ENV POSTGRES_DB gym-stats
+
+RUN postgres
+
+FROM node:lts as base
 
 ARG DATABASE_URL
 ARG PORT=3000
-ENV DATABASE_URL ${DATABASE_URL}
+ENV DATABASE_URL "postgresql://postgres:dummypass@localhost:5432/gym-stats"
 
 WORKDIR /usr/src/app
 
@@ -11,6 +18,7 @@ COPY db/ ./db/
 RUN npm install
 
 COPY . .
+ENV NODE_ENV=production
 RUN npm run build
 
 EXPOSE ${PORT}
