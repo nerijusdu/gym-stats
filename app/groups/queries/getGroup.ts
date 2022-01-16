@@ -26,6 +26,9 @@ export default resolver.pipe(resolver.zod(GetGroup), resolver.authorize(), async
       users: {
         select: { id: true, name: true, email: true },
       },
+      owner: {
+        select: { id: true, name: true }
+      },
       period: true,
       periodType: true,
       iterationStartDate: true,

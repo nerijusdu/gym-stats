@@ -3,8 +3,9 @@
   - [x] Set iterations
   - [x] Log your progress
   - [ ] Previous iterations
+  - [x] Show group owner in the user list
 - Home screen
   - [x] Scoreboard for the most recent groups (+ time left)
+  - [ ] Show progress in the leaderboard
 
 - [x] Add name to user data
-- [ ] Show group owner in the user list

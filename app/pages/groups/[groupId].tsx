@@ -33,8 +33,8 @@ export const Group: React.FC = () => {
         <Divider my={2} />
 
         <Flex direction="column">
-          {group.users.length > 0 && <Text>Users in this group:</Text>}
-          {!group.users.length && <Text>No users assigned to this group</Text>}
+          <Text>Users in this group:</Text>
+          <Text>{group.owner.name}</Text>
           {group.users.map((user) => (
             <Text key={user.id}>{user.name}</Text>
           ))}

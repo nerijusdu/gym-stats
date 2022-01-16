@@ -1,4 +1,5 @@
 import { Button, Flex, FormControl, FormLabel, Input } from "@chakra-ui/react"
+import { useCurrentUser } from "app/core/hooks/useCurrentUser"
 import { useFieldArray, useFormContext } from "react-hook-form"
 
 const UserSelect: React.FC = () => {
@@ -8,12 +9,19 @@ const UserSelect: React.FC = () => {
     formState: { errors },
   } = useFormContext()
   const { fields, append, remove } = useFieldArray({ control, name: "users" })
+  const currentUser = useCurrentUser()
 
   return (
     <FormControl>
       <FormLabel>
         Users
         <Flex flexDir="column" maxW="300px" gap={2}>
+          <Flex>
+            <Input value={currentUser?.email} isDisabled />
+            <Button variant="ghost" size="sm" isDisabled>
+              Remove
+            </Button>
+          </Flex>
           {fields.map((field, index) => (
             <Flex key={field.id}>
               <Input {...register(`users[${index}].email`)} placeholder="Email" />

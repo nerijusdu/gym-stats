@@ -46,7 +46,10 @@ export default resolver.pipe(
         id: true,
         name: true,
         users: {
-          select: { id: true, email: true },
+          select: { id: true, name: true, email: true },
+        },
+        owner: {
+          select: { id: true, name: true },
         },
         period: true,
         periodType: true,
