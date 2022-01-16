@@ -3,7 +3,7 @@ FROM postgres as database
 ENV POSTGRES_PASSWORD dummypass
 ENV POSTGRES_DB gym-stats
 
-RUN postgres
+RUN docker-entrypoint.sh -c 'shared_buffers=256MB' -c 'max_connections=200'
 
 FROM node:lts as base
 
