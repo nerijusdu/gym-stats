@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:lts
 
 ARG DATABASE_URL
 ARG PORT=3000
@@ -6,14 +6,13 @@ ENV DATABASE_URL ${DATABASE_URL}
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 COPY db/ ./db/
-RUN yarn install --frozen-lockfile
-RUN yarn blitz prisma migrate deploy
+RUN npm install
 
 COPY . .
-RUN yarn build
+RUN npm run build
 
 EXPOSE ${PORT}
 
-CMD yarn start -p ${PORT}
+CMD npm blitz prisma migrate deploy && npm start -p ${PORT}
