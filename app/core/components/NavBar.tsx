@@ -34,7 +34,7 @@ const UserInfo: React.FC = () => {
         >
           Logout
         </Link>
-        <div>{currentUser.email}</div>
+        <div>{currentUser.name}</div>
       </>
     )
   } else {

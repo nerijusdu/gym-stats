@@ -16,7 +16,7 @@ const Home: BlitzPage = () => {
       {groups.map((group) => (
         <Container align="center" key={group.id}>
           <Heading size="md">{group.name}</Heading>
-          <Podium names={group.users.map(x => x.email)} />
+          <Podium names={group.users.map(x => x.name)} />
           <Text mt={4} fontWeight="bold">
             Time left: {Math.ceil(dayjs(group.iterationEndDate).diff(dayjs(), 'days', true))} day(s)
           </Text>

@@ -36,7 +36,7 @@ export const Group: React.FC = () => {
           {group.users.length > 0 && <Text>Users in this group:</Text>}
           {!group.users.length && <Text>No users assigned to this group</Text>}
           {group.users.map((user) => (
-            <Text key={user.id}>{user.email}</Text>
+            <Text key={user.id}>{user.name}</Text>
           ))}
 
           <Divider my={2} />

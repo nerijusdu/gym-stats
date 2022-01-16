@@ -6,4 +6,5 @@
 - Home screen
   - [x] Scoreboard for the most recent groups (+ time left)
 
-- [ ] Add name to user data
+- [x] Add name to user data
+- [ ] Show group owner in the user list
