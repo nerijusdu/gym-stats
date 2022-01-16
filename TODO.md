@@ -1,11 +1,16 @@
 - Groups
-  - [x] CRUD group
-  - [x] Set iterations
-  - [x] Log your progress
+  - [X] CRUD group
+  - [X] Set iterations
+  - [X] Log your progress
+  - [ ] Start new iteration (automatically?)
   - [ ] Previous iterations
-  - [x] Show group owner in the user list
+  - [X] Show group owner in the user list
 - Home screen
-  - [x] Scoreboard for the most recent groups (+ time left)
+  - [X] Scoreboard for the most recent groups (+ time left)
 
-- [x] Add name to user data
-- [ ] Deploy
+- [X] Add name to user data
+- [X] Deploy
+- [X] Home page is empty for new users
+- [X] When not logged in, home page asks to login without navbar
+- [X] Iteration end only works when updating group, not creating
+- [X] Log progress should refresh home page and close modal

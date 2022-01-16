@@ -1,7 +1,7 @@
 import { resolver } from "blitz"
 import db from "db"
 import { CreateGroup } from "../validations"
-import dayjs from "dayjs"
+import dayjs, { OpUnitType } from "dayjs"
 
 export default resolver.pipe(
   resolver.zod(CreateGroup),
@@ -12,10 +12,15 @@ export default resolver.pipe(
     })
 
     const iterationStartDate = dayjs(input.iterationStartDate)
-    const iterationEndDate = iterationStartDate.add(
+    let iterationEndDate = iterationStartDate.add(
       input.period,
       input.periodType.toLocaleLowerCase()
     )
+    if (input.endOfPeriod) {
+      iterationEndDate = iterationEndDate
+        .startOf(input.periodType.toLocaleLowerCase() as OpUnitType)
+        .add(-1, "day")
+    }
 
     return await db.group.create({
       data: {
