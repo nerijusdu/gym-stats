@@ -1,33 +1,44 @@
-import { BlitzPage, useQuery } from "blitz"
+import { BlitzPage, Image, Routes, Link as BlitzLink } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text, Link } from "@chakra-ui/react";
 import Container from "app/core/components/Container";
-import Podium from "app/core/components/Podium";
-import dayjs from "dayjs";
-import LogProgressModal from "app/groups/components/LogProgressModal";
-import getGroupsWithProgress from "app/groups/queries/getGroupsWithProgress";
-
+import lifter from "public/lifter.jpg"
+import lazy from "public/lazy.png"
 
 const Home: BlitzPage = () => {
-  const [groups] = useQuery(getGroupsWithProgress, {});
 
   return (
     <Flex w="100%" direction="column">
-      {groups.map((group) => (
-        <Container align="center" key={group.id}>
-          <Heading size="md">{group.name}</Heading>
-          <Podium names={group.users.map(x => x.name)} />
-          <Text mt={4} fontWeight="bold">
-            Time left: {Math.ceil(dayjs(group.iterationEndDate).diff(dayjs(), 'days', true))} day(s)
-          </Text>
-          <LogProgressModal groupId={group.id}/>
-        </Container>
-      ))}
+      <Container>
+        <Heading>It&apos;s time to get your ass to the gym!</Heading>
+      </Container>
+
+      <Container>
+        <Heading size="lg">How it works</Heading>
+        <Text>1. Signup</Text>
+        <Text>2. Join a group</Text>
+        <Text>3. Compete with your friends</Text>
+        <Text>4. Win stupid prizes</Text>
+      </Container>
+
+      <Container>
+        <Heading size="lg">Be like this guy</Heading>
+        <Image src={lifter} alt="a guy lifting weights" />
+        <Heading mt={4} size="lg">Don&apos;t Be like this guy</Heading>
+        <Image src={lazy} alt="a lazy guy" />
+      </Container>
+
+      <Container>
+        <BlitzLink href="/signup">
+          <Link><Heading size="lg">It&lsquo;s free! Sign up and go to the damn gym!</Heading></Link>
+        </BlitzLink>
+      </Container>
     </Flex>
   );
 }
 
 Home.suppressFirstRenderFlicker = true
+Home.redirectAuthenticatedTo = Routes.Dashboard()
 Home.getLayout = (page) => <Layout title="Home">{page}</Layout>
 
 export default Home

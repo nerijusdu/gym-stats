@@ -18,12 +18,19 @@ import logProgress from "../mutations/logProgress";
 
 export type LogProgressModalProps = {
   groupId: string;
+  onLogged?: () => void;
 }
 
-const LogProgressModal : React.FC<LogProgressModalProps> = ({ groupId }) => {
+const LogProgressModal : React.FC<LogProgressModalProps> = ({ groupId, onLogged }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { showError } = useAlert();
-  const [logProgressMutation] = useMutation(logProgress, { onError: (e: Error) => showError(e.message) });
+  const [logProgressMutation] = useMutation(logProgress, {
+    onError: (e: Error) => showError(e.message),
+    onSuccess: () => {
+      onClose();
+      onLogged?.();
+    }
+  });
 
   return (
     <>
