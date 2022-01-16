@@ -50,6 +50,10 @@ export default resolver.pipe(
         },
         period: true,
         periodType: true,
+        iterationStartDate: true,
+        iterationEndDate: true,
+        endOfPeriod: true,
+        ownerId: true,
       },
     })
   }

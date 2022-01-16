@@ -6,7 +6,18 @@ interface GetGroupsInput
 
 export default resolver.pipe(
   resolver.authorize(),
-  async ({ where, orderBy, skip = 0, take = 100 }: GetGroupsInput) => {
+  async ({ where, orderBy, skip = 0, take = 100 }: GetGroupsInput, ctx) => {
+    const userFilter: Prisma.GroupWhereInput = {
+      OR: [
+        {
+          users: { some: { id: ctx.session.userId } }
+        },
+        {
+          ownerId: ctx.session.userId,
+        }
+      ]
+    };
+
     const {
       items: groups,
       hasMore,
@@ -15,10 +26,10 @@ export default resolver.pipe(
     } = await paginate({
       skip,
       take,
-      count: () => db.group.count({ where }),
+      count: () => db.group.count({ where: {...where, ...userFilter} }),
       query: (paginateArgs) => db.group.findMany({
         ...paginateArgs,
-        where,
+        where: {...where, ...userFilter},
         orderBy,
         select: {
           id: true,

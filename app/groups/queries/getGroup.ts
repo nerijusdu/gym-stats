@@ -7,9 +7,19 @@ const GetGroup = z.object({
   id: z.string().optional().refine(Boolean, "Required"),
 })
 
-export default resolver.pipe(resolver.zod(GetGroup), resolver.authorize(), async ({ id }) => {
+export default resolver.pipe(resolver.zod(GetGroup), resolver.authorize(), async ({ id }, ctx) => {
   const group = await db.group.findFirst({
-    where: { id },
+    where: {
+      id,
+      OR: [
+        {
+          users: { some: { id: ctx.session.userId } }
+        },
+        {
+          ownerId: ctx.session.userId,
+        }
+      ]
+    },
     select: {
       id: true,
       name: true,
@@ -21,6 +31,7 @@ export default resolver.pipe(resolver.zod(GetGroup), resolver.authorize(), async
       iterationStartDate: true,
       iterationEndDate: true,
       endOfPeriod: true,
+      ownerId: true,
     },
   })
 

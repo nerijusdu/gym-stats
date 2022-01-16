@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 
 export type PodiumProps = {
-  names: [string?, string?, string?];
+  names: string[];
 };
 
 const Podium : React.FC<PodiumProps> = ({ names }) => {

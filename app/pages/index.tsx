@@ -1,25 +1,26 @@
-import { BlitzPage, usePaginatedQuery } from "blitz"
+import { BlitzPage, useQuery } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import getGroups from "app/groups/queries/getGroups";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import Container from "app/core/components/Container";
 import Podium from "app/core/components/Podium";
 import dayjs from "dayjs";
+import LogProgressModal from "app/groups/components/LogProgressModal";
+import getGroupsWithProgress from "app/groups/queries/getGroupsWithProgress";
 
 
 const Home: BlitzPage = () => {
-  const [{groups}] = usePaginatedQuery(getGroups, { orderBy: { id: "asc" }, take: 3 });
+  const [groups] = useQuery(getGroupsWithProgress, {});
 
   return (
     <Flex w="100%" direction="column">
       {groups.map((group) => (
         <Container align="center" key={group.id}>
           <Heading size="md">{group.name}</Heading>
-          <Podium names={['yeet', 'yeet2', 'yeet3']} />
+          <Podium names={group.users.map(x => x.email)} />
           <Text mt={4} fontWeight="bold">
             Time left: {Math.ceil(dayjs(group.iterationEndDate).diff(dayjs(), 'days', true))} day(s)
           </Text>
-          <Button mt={4} alignSelf="flex-end">Log progress</Button>
+          <LogProgressModal groupId={group.id}/>
         </Container>
       ))}
     </Flex>

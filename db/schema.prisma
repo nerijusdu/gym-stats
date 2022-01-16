@@ -30,6 +30,7 @@ model User {
   sessions     Session[]
   ownedGroups  Group[]   @relation("OwnedGroups")
   joinedGroups Group[]   @relation("JoinedGroups")
+  progressLogs GroupProgress[]
 }
 
 model Session {
@@ -81,10 +82,22 @@ model Group {
   iterationStartDate DateTime
   iterationEndDate   DateTime
   iterationId        Int        @default(0)
+  progressLogs       GroupProgress[]
 }
 
 enum PeriodType {
   WEEK
   MONTH
   YEAR
+}
+
+model GroupProgress {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  iteration Int
+  group     Group     @relation(fields: [groupId], references: [id])
+  groupId   String
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
 }

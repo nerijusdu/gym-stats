@@ -18,3 +18,7 @@ export const UpdateGroup = z.object({
   iterationStartDate: z.date().optional(),
   endOfPeriod: z.boolean().optional(),
 })
+
+export const LogProgress = z.object({
+  groupId: z.string(),
+});
