@@ -1,15 +1,8 @@
-FROM postgres as database
-
-ENV POSTGRES_PASSWORD dummypass
-ENV POSTGRES_DB gym-stats
-
-RUN docker-entrypoint.sh -c 'shared_buffers=256MB' -c 'max_connections=200'
-
-FROM node:lts as base
+FROM node:lts
 
 ARG DATABASE_URL
 ARG PORT=3000
-ENV DATABASE_URL "postgresql://postgres:dummypass@localhost:5432/gym-stats"
+ENV DATABASE_URL ${DATABASE_URL}
 
 WORKDIR /usr/src/app
 
