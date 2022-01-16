@@ -1,0 +1,29 @@
+name: Deploy latest GymStats version to environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Docker image tag to run (e.g. 0.6)'
+        required: true
+        default: 'latest'
+      env:
+        description: 'Environment to deploy to (sbx or prod)'
+        required: true
+        default: 'sbx'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use latest docker image
+        uses: appleboy/ssh-action@master
+        with:
+          host: savemybank.lt
+          username: ${{ secrets.SSH_USER_NAME }}
+          password: ${{ secrets.SSH_USER_PASS }}
+          script: |
+            cd /home/web/gym-stats/${{ github.event.inputs.env }}
+            export API_TAG=${{ github.event.inputs.tag }}
+            docker-compose pull gym-stats
+            docker-compose up -d
