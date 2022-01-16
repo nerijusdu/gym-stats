@@ -6,6 +6,7 @@
     "build": "blitz build",
     "start": "blitz start",
     "studio": "blitz prisma studio",
+    "migrate:deploy": "blitz prisma migrate deploy",
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "test": "jest",
     "test:watch": "jest --watch"

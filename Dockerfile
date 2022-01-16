@@ -16,4 +16,4 @@ RUN npm run build
 
 EXPOSE ${PORT}
 
-CMD npm blitz prisma migrate deploy && npm start -p ${PORT}
+CMD npm run migrate:deploy && npm start -p ${PORT}
