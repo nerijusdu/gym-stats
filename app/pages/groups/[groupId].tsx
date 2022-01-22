@@ -7,6 +7,8 @@ import { Button, Divider, Flex, Heading, Text } from "@chakra-ui/react"
 import Container from "app/core/components/Container"
 import dayjs from "dayjs"
 import { useCurrentUser } from "app/core/hooks/useCurrentUser"
+import startIteration from "app/groups/mutations/startIteration"
+import useAlert from "app/core/hooks/useAlert"
 
 const periodNames = {
   WEEK: "Week(s)",
@@ -15,11 +17,14 @@ const periodNames = {
 }
 
 export const Group: React.FC = () => {
+  const { showError } = useAlert()
   const router = useRouter()
   const currentUser = useCurrentUser()
   const groupId = useParam("groupId", "string")
   const [deleteGroupMutation] = useMutation(deleteGroup)
-  const [group] = useQuery(getGroup, { id: groupId })
+  const [startIterationMutation] = useMutation(startIteration, { onError: showError });
+  const [group, { setQueryData }] = useQuery(getGroup, { id: groupId })
+  const isIterationDone = dayjs(group?.iterationEndDate).diff(dayjs(), "days") < 0
 
   return (
     <>
@@ -53,10 +58,6 @@ export const Group: React.FC = () => {
 
         {currentUser?.id === group.ownerId && (
           <Flex alignSelf="flex-end">
-            <Link href={Routes.EditGroupPage({ groupId: group.id })}>
-              <Button variant="ghost">Edit</Button>
-            </Link>
-
             <Button
               type="button"
               colorScheme="red"
@@ -71,6 +72,17 @@ export const Group: React.FC = () => {
             >
               Delete
             </Button>
+
+            <Link href={Routes.EditGroupPage({ groupId: group.id })}>
+              <Button variant="ghost">Edit</Button>
+            </Link>
+
+            {isIterationDone && (
+              <Button onClick={async () => {
+                const result = await startIterationMutation({ groupId: group.id })
+                setQueryData(result)
+              }}>Start a new iteration</Button>
+            )}
           </Flex>
         )}
       </Container>

@@ -19,6 +19,6 @@ export const UpdateGroup = z.object({
   endOfPeriod: z.boolean().optional(),
 })
 
-export const LogProgress = z.object({
+export const GroupIdentification = z.object({
   groupId: z.string(),
 });

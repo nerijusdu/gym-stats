@@ -6,7 +6,7 @@ type GroupWithProgress = Group & {
   username: string;
 };
 
-type GroupWithUsers = Group & {
+export type GroupWithUsers = Group & {
   users: {
     name: string;
     progressCount: number;

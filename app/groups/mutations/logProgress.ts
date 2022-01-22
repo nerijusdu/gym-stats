@@ -1,9 +1,9 @@
 import { resolver, NotFoundError } from "blitz";
 import dayjs from "dayjs";
 import db from "db";
-import { LogProgress } from "../validations";
+import { GroupIdentification } from "../validations";
 
-export default resolver.pipe(resolver.zod(LogProgress), resolver.authorize(), async (input, ctx) => {
+export default resolver.pipe(resolver.zod(GroupIdentification), resolver.authorize(), async (input, ctx) => {
   const group = await db.group.findFirst({
     where: { id: input.groupId},
     include: {
@@ -16,6 +16,10 @@ export default resolver.pipe(resolver.zod(LogProgress), resolver.authorize(), as
 
   if (!group?.users.length && group?.ownerId !== ctx.session.userId) {
     throw new NotFoundError("Couldn't find group. Make sure the owner has assigned you to the group.");
+  }
+
+  if (dayjs(group?.iterationEndDate).isBefore(dayjs())) {
+    throw new Error("You cannot log progress for an iteration that has already ended.");
   }
 
   const lastLog = await db.groupProgress.findFirst({
