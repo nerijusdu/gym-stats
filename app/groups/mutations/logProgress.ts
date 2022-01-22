@@ -1,9 +1,16 @@
 import { resolver, NotFoundError } from "blitz";
 import dayjs from "dayjs";
 import db from "db";
-import { GroupIdentification } from "../validations";
+import { LogProgress } from "../validations";
 
-export default resolver.pipe(resolver.zod(GroupIdentification), resolver.authorize(), async (input, ctx) => {
+const getAddress = async (latitude, longitude) => {
+  const url = `http://api.positionstack.com/v1/reverse?access_key=${process.env.POSITIONSTACK_API_KEY}&query=${latitude},${longitude}&output=json&limit=1`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.data[0].label;
+};
+
+export default resolver.pipe(resolver.zod(LogProgress), resolver.authorize(), async (input, ctx) => {
   const group = await db.group.findFirst({
     where: { id: input.groupId},
     include: {
@@ -40,6 +47,11 @@ export default resolver.pipe(resolver.zod(GroupIdentification), resolver.authori
     throw new Error("You have already logged progress for this iteration today.");
   }
 
+  let location;
+  if (input.latitude && input.longitude) {
+    location = await getAddress(input.latitude, input.longitude);
+  }
+
   const progress = await db.groupProgress.create({
     data: {
       group: {
@@ -48,7 +60,8 @@ export default resolver.pipe(resolver.zod(GroupIdentification), resolver.authori
       user: {
         connect: { id: ctx.session.userId }
       },
-      iteration: group.iterationId
+      iteration: group.iterationId,
+      location: location
     }
   });
 

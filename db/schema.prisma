@@ -100,4 +100,5 @@ model GroupProgress {
   groupId   String
   user      User      @relation(fields: [userId], references: [id])
   userId    Int
+  location  String?
 }

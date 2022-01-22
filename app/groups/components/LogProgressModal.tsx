@@ -8,10 +8,10 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  Text,
-  useToast
+  Text
 } from "@chakra-ui/react";
 import useAlert from "app/core/hooks/useAlert";
+import useGeolocation from "app/core/hooks/useGeolocation";
 import { useMutation } from "blitz";
 import dayjs from "dayjs";
 import logProgress from "../mutations/logProgress";
@@ -24,6 +24,7 @@ export type LogProgressModalProps = {
 const LogProgressModal : React.FC<LogProgressModalProps> = ({ groupId, onLogged }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { showError } = useAlert();
+  const loc = useGeolocation({ enableHighAccuracy: true });
   const [logProgressMutation] = useMutation(logProgress, {
     onError: (e: Error) => showError(e.message),
     onSuccess: () => {
@@ -45,7 +46,9 @@ const LogProgressModal : React.FC<LogProgressModalProps> = ({ groupId, onLogged 
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" colorScheme="red" onClick={onClose}>Cancel</Button>
-            <Button onClick={() => { logProgressMutation({ groupId }); }}>Log</Button>
+            <Button onClick={() => { logProgressMutation({ groupId, latitude: loc.latitude, longitude: loc.longitude }); }}>
+              Log
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

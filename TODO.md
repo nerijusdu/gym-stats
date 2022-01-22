@@ -15,4 +15,4 @@
 - [X] When not logged in, home page asks to login without navbar
 - [X] Iteration end only works when updating group, not creating
 - [X] Log progress should refresh home page and close modal
-- [ ] Use location
+- [X] Use location

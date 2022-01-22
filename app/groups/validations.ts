@@ -22,3 +22,9 @@ export const UpdateGroup = z.object({
 export const GroupIdentification = z.object({
   groupId: z.string(),
 });
+
+export const LogProgress = z.object({
+  groupId: z.string(),
+  latitude: z.number().optional().nullable(),
+  longitude: z.number().optional().nullable(),
+});
